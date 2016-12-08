@@ -22,6 +22,11 @@ struct GridPoint :Hashable {
     var x: Int
     var y: Int
 
+    init( _ x: Int, _ y: Int ) {
+        self.x = x
+        self.y = y
+    }
+
     var hashValue: Int {
         return x.hashValue ^ y.hashValue
     }
@@ -36,7 +41,7 @@ struct GridPoint :Hashable {
 }
 
 class Walker {
-    var pos = GridPoint(x:0,y:0)
+    var pos = GridPoint(0,0)
     var facing = 0
 
     func newPos( _ direction: String ) throws -> GridPoint {
@@ -78,6 +83,30 @@ class Walker {
         catch {
             print("Didn't understand \(direction), ignoring")
         }
+    }
+
+    func _path( from: GridPoint, to: GridPoint ) -> Set<GridPoint> {
+        var here = from
+        var path : Set<GridPoint> = [here]
+        let x_diff = to.x - from.x
+        let y_diff = to.y - from.y
+        let x_sign = x_diff >= 0 ? 1 : -1
+        let y_sign = y_diff >= 0 ? 1 : -1
+
+        if( x_diff != 0 ) {
+            for _ in 1..<abs(x_diff) {
+                here.x += x_sign
+                path.insert(here)
+            }
+        }
+        if( y_diff != 0 ) {
+            for _ in 1..<abs(y_diff) {
+                here.y += y_sign
+                path.insert(here)
+            }
+        }
+
+        return path
     }
 
     func splitDirections( _ directions: String ) -> [String] {

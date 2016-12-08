@@ -16,4 +16,16 @@ class TestDay01 : XCTestCase {
             XCTAssertEqual( walker.blocksAway(have), want )
         }
     }
+
+    func testPath() {
+        let walker = Walker()
+        XCTAssertEqual(
+            walker._path(from: GridPoint(0,0), to: GridPoint(0,3) ),
+            [GridPoint(0,0), GridPoint(0,1), GridPoint(0,2)]
+        )
+        XCTAssertEqual(
+            walker._path(from: GridPoint(-1,3), to: GridPoint(-1,1) ),
+            [GridPoint(-1,3), GridPoint(-1,2)]
+        )
+    }
 }
