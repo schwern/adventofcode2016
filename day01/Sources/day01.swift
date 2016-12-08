@@ -85,9 +85,9 @@ class Walker {
         }
     }
 
-    func _path( from: GridPoint, to: GridPoint ) -> Set<GridPoint> {
+    func _path( from: GridPoint, to: GridPoint ) -> [GridPoint] {
         var here = from
-        var path : Set<GridPoint> = [here]
+        var path : [GridPoint] = [here]
         let x_diff = to.x - from.x
         let y_diff = to.y - from.y
         let x_sign = x_diff >= 0 ? 1 : -1
@@ -96,13 +96,13 @@ class Walker {
         if( x_diff != 0 ) {
             for _ in 1..<abs(x_diff) {
                 here.x += x_sign
-                path.insert(here)
+                path.append(here)
             }
         }
         if( y_diff != 0 ) {
             for _ in 1..<abs(y_diff) {
                 here.y += y_sign
-                path.insert(here)
+                path.append(here)
             }
         }
 
