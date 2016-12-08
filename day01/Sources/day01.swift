@@ -5,6 +5,19 @@ case invalidDirection( direction: String )
 case invalidFacing( facing: Int )
 }
 
+extension String {
+    func trim( _ toTrim :CharacterSet = CharacterSet.whitespacesAndNewlines ) -> String {
+        return self.trimmingCharacters( in: toTrim )
+    }
+
+    mutating func chomp() {
+        let lastIdx = index(before: endIndex)
+        if self[lastIdx] == "\n" {
+            return self.removeSubrange(lastIdx...lastIdx)
+        }
+    }
+}
+
 struct GridPoint :Hashable {
     var x: Int
     var y: Int
@@ -55,11 +68,12 @@ class Walker {
         }
     }
 
+    func splitDirections( _ directions: String ) -> [String] {
+        return directions.components(separatedBy: ", ").map { $0.trim() }
+    }
+
     func blocksAway( _ directions: String ) -> Int {
-        for _direction in directions.components(separatedBy: ", ") {
-            let direction = _direction.trimmingCharacters(
-                in: CharacterSet.whitespacesAndNewlines
-            )
+        for direction in splitDirections( directions ) {
             do {
                 try move(direction)
             }
