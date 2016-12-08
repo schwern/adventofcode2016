@@ -22,13 +22,11 @@ struct GridPoint :Hashable {
     }
 }
 
-func blocksAway( _ directions: String ) throws -> Int {
-    var pos = GridPoint(x:0, y:0)
+class Walker {
+    var pos = GridPoint(x:0,y:0)
     var facing = 0
-    for _direction in directions.components(separatedBy: ", ") {
-        let direction = _direction.trimmingCharacters(
-            in: CharacterSet.whitespacesAndNewlines
-        )
+
+    func move( _ direction: String ) throws {
         let turn = direction[direction.startIndex]
         guard let distance = Int(String(direction.characters.dropFirst())) else {
             throw BlocksError.invalidDirection( direction: direction )
@@ -57,5 +55,19 @@ func blocksAway( _ directions: String ) throws -> Int {
         }
     }
 
-    return pos.distance_from_origin()
+    func blocksAway( _ directions: String ) -> Int {
+        for _direction in directions.components(separatedBy: ", ") {
+            let direction = _direction.trimmingCharacters(
+                in: CharacterSet.whitespacesAndNewlines
+            )
+            do {
+                try move(direction)
+            }
+            catch {
+                print("Didn't understand \(direction), ignoring")
+            }
+        }
+
+        return pos.distance_from_origin()
+    }
 }

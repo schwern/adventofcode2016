@@ -7,5 +7,6 @@ if args.count != 2 {
 else {
     let file = args[1]
     let input = try String( contentsOfFile: file )
-    print( try blocksAway( input ))
+    var walker = Walker()
+    print( walker.blocksAway( input ))
 }
