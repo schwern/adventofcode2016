@@ -5,9 +5,25 @@ case invalidDirection( direction: String )
 case invalidFacing( facing: Int )
 }
 
+struct GridPoint :Hashable {
+    var x: Int
+    var y: Int
+
+    var hashValue: Int {
+        return x.hashValue ^ y.hashValue
+    }
+
+    func distance_from_origin() -> Int {
+        return abs(x) + abs(y)
+    }
+
+    static func == (lhs: GridPoint, rhs: GridPoint) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y
+    }
+}
+
 func blocksAway( _ directions: String ) throws -> Int {
-    var x = 0
-    var y = 0
+    var pos = GridPoint(x:0, y:0)
     var facing = 0
     for _direction in directions.components(separatedBy: ", ") {
         let direction = _direction.trimmingCharacters(
@@ -29,17 +45,17 @@ func blocksAway( _ directions: String ) throws -> Int {
 
         switch(facing % 4) {
         case 0:
-            y += distance
+            pos.y += distance
         case 1:
-            x += distance
+            pos.x += distance
         case 2:
-            y -= distance
+            pos.y -= distance
         case 3:
-            x -= distance
+            pos.x -= distance
         default:
             throw BlocksError.invalidFacing(facing: facing)
         }
     }
 
-    return abs(x) + abs(y)
+    return pos.distance_from_origin()
 }
