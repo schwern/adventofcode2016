@@ -39,7 +39,7 @@ class Walker {
     var pos = GridPoint(x:0,y:0)
     var facing = 0
 
-    func move( _ direction: String ) throws {
+    func newPos( _ direction: String ) throws -> GridPoint {
         let turn = direction[direction.startIndex]
         guard let distance = Int(String(direction.characters.dropFirst())) else {
             throw BlocksError.invalidDirection( direction: direction )
@@ -54,17 +54,29 @@ class Walker {
             throw BlocksError.invalidDirection( direction: direction)
         }
 
+        var new_pos = pos
         switch(facing % 4) {
         case 0:
-            pos.y += distance
+            new_pos.y += distance
         case 1:
-            pos.x += distance
+            new_pos.x += distance
         case 2:
-            pos.y -= distance
+            new_pos.y -= distance
         case 3:
-            pos.x -= distance
+            new_pos.x -= distance
         default:
             throw BlocksError.invalidFacing(facing: facing)
+        }
+
+        return new_pos
+    }
+
+    func move( _ direction: String ) {
+        do {
+            pos = try newPos(direction)
+        }
+        catch {
+            print("Didn't understand \(direction), ignoring")
         }
     }
 
@@ -74,12 +86,7 @@ class Walker {
 
     func blocksAway( _ directions: String ) -> Int {
         for direction in splitDirections( directions ) {
-            do {
-                try move(direction)
-            }
-            catch {
-                print("Didn't understand \(direction), ignoring")
-            }
+            move(direction)
         }
 
         return pos.distance_from_origin()
