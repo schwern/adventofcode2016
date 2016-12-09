@@ -7,6 +7,13 @@ if args.count != 2 {
 else {
     let file = args[1]
     let input = try String( contentsOfFile: file )
-    var walker = Walker()
-    print( walker.blocksAway( input ))
+
+    var blocks = Walker().blocksAway(input)
+    guard var crossing = Walker().firstCrossing(input) else {
+        print("Couldn't find a crossing")
+        exit(1)
+    }
+    var crossing_blocks = crossing.distance_from_origin()
+    print( "It's \(blocks) blocks away." )
+    print( "First crossing at \(crossing), which is \(crossing_blocks) away")
 }

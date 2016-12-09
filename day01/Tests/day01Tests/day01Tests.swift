@@ -28,4 +28,15 @@ class TestDay01 : XCTestCase {
             [GridPoint(-1,3), GridPoint(-1,2)]
         )
     }
+
+    func testFirstCrossing() {
+        let walker = Walker()
+
+        guard let crossing = walker.firstCrossing("R8, R4, R4, R8") else {
+            XCTAssert(false)
+            return
+        }
+        XCTAssertEqual( crossing, GridPoint(4,0) )
+        XCTAssertEqual( crossing.distance_from_origin(), 4 )
+    }
 }

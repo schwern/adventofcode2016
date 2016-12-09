@@ -120,4 +120,23 @@ class Walker {
 
         return pos.distance_from_origin()
     }
+
+    func firstCrossing( _ directions: String ) -> GridPoint? {
+        var visited : Set<GridPoint> = []
+        for direction in splitDirections( directions ) {
+            let from = pos
+            move(direction)
+            let to = pos
+            let path = _path(from: from, to: to)
+            for spot in path {
+                if visited.contains(spot) {
+                    return spot
+                }
+
+                visited.insert(spot)
+            }
+        }
+
+        return nil
+    }
 }
