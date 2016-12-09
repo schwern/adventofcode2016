@@ -1,8 +1,8 @@
 import Foundation
 
-enum BlocksError: Error {
-case invalidDirection( direction: String )
-case invalidFacing( facing: Int )
+enum WalkerError: Error {
+    case invalidDirection( direction: String )
+    case invalidFacing( facing: Int )
 }
 
 extension String {
@@ -47,7 +47,7 @@ class Walker {
     func newPos( _ direction: String ) throws -> GridPoint {
         let turn = direction[direction.startIndex]
         guard let distance = Int(String(direction.characters.dropFirst())) else {
-            throw BlocksError.invalidDirection( direction: direction )
+            throw WalkerError.invalidDirection( direction: direction )
         }
 
         switch(turn) {
@@ -56,7 +56,7 @@ class Walker {
         case "L":
             facing += 3
         default:
-            throw BlocksError.invalidDirection( direction: direction)
+            throw WalkerError.invalidDirection( direction: direction)
         }
 
         var new_pos = pos
@@ -70,7 +70,7 @@ class Walker {
         case 3:
             new_pos.x -= distance
         default:
-            throw BlocksError.invalidFacing(facing: facing)
+            throw WalkerError.invalidFacing(facing: facing)
         }
 
         return new_pos
