@@ -16,6 +16,9 @@ class KeypadCracker {
     func figureCode( _ instructions: [String] ) -> Int {
         var code = 0
         for instruction in instructions {
+            if( instruction.isEmpty ) {
+                continue
+            }
             code *= 10
             code += try! figureInstruction(instruction.trim())
         }
