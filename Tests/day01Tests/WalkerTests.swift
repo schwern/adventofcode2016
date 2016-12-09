@@ -2,7 +2,7 @@ import XCTest
 import GridPoint
 @testable import day01
 
-class TestDay01 : XCTestCase {
+class TestWalker : XCTestCase {
     func testBlocksAway() {
         let tests = [
             "R2, L3": 5,
