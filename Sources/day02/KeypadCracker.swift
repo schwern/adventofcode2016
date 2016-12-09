@@ -1,74 +1,72 @@
 import Foundation
 import SwiftExtensions
+import GridPoint
 
 class KeypadCracker {
     enum KeypadCrackerErrors : Error {
-    case invalidInstruction( instruction: String )
+        case invalidInstruction( instruction: String )
+        case invalidMove( move: Character )
     }
 
-    let keypadRange = 1...9;
-    let verticalMoves : [Character:Int] = [
-        "U": -3,
-        "D": 3,
+    var keypad : [[Character]] = [
+        [" ",  " ",  "1",  " ",  " "],
+        [" ",  "2",  "3",  "4",  " "],
+        ["5",  "6",  "7",  "8",  "9"],
+        [" ",  "A",  "B",  "C",  " "],
+        [" ",  " ",  "D",  " ",  " "]
     ]
-    var finger = 5
 
-    func figureCode( _ instructions: [String] ) -> Int {
-        var code = 0
+    var finger = GridPoint(2,0)
+
+    func figureCode( _ instructions: [String] ) -> String {
+        var code = ""
         for instruction in instructions {
             if( instruction.isEmpty ) {
                 continue
             }
-            code *= 10
-            code += try! figureInstruction(instruction.trim())
+            code.append(try! figureInstruction(instruction.trim()))
         }
         return code
     }
 
-    func figureInstruction( _ instruction: String ) throws -> Int {
+    func figureInstruction( _ instruction: String ) throws -> Character {
         for move in instruction.characters {
-            var key = tryVerticalMove(move)
-            if key == nil {
-                key = tryHorizontalMove(move)
+            do {
+                try moveFinger(move)
             }
-            if key == nil {
+            catch {
                 throw KeypadCrackerErrors.invalidInstruction( instruction: instruction )
             }
-
-            finger = key!
         }
 
-        return finger
+        return keypad[finger.x][finger.y]
     }
 
-    func tryVerticalMove( _ move : Character ) -> Int? {
-        guard let moveAsInt = verticalMoves[move] else {
-            return nil;
-        }
+    func moveFinger( _ move : Character ) throws {
+        var x = finger.x
+        var y = finger.y
 
-        let key = finger + moveAsInt;
-
-        return keypadRange.contains(key) ? key : finger
-    }
-
-    func tryHorizontalMove( _ move : Character ) -> Int? {
         switch(move) {
-            case "R":
-                if( finger % 3 == 0 ) {
-                    return finger
-                }
-                else {
-                    return finger + 1
-                }
-            case "L":
-                if( finger % 3 == 1 ) {
-                    return finger
-                }
-                else {
-                    return finger - 1
-                }
-            default:
-                return nil
+        case "U":
+            x -= 1
+        case "D":
+            x += 1
+        case "R":
+            y += 1
+        case "L":
+            y -= 1
+        default:
+            throw KeypadCrackerErrors.invalidMove( move: move )
+        }
+
+        let keypadXRange = 0..<keypad.endIndex
+        let keypadYRange = 0..<keypad[0].endIndex
+        if( keypadXRange.contains(x) &&
+            keypadYRange.contains(y) &&
+            keypad[x][y] != " ")
+        {
+            finger.x = x
+            finger.y = y
         }
     }
 }
