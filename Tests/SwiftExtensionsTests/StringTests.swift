@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import day01
+@testable import SwiftExtensions
 
 class TestStringExtensions : XCTestCase {
     func testChomp() {

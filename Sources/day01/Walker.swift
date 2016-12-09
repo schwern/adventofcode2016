@@ -1,4 +1,6 @@
 import Foundation
+import SwiftExtensions
+import GridPoint
 
 enum WalkerError: Error {
     case invalidDirection( direction: String )
