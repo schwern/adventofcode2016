@@ -1,6 +1,6 @@
 import XCTest
 import GridPoint
-@testable import day02
+@testable import KeypadCracker
 
 class TestKeypadCracker : XCTestCase {
     let instructions = [

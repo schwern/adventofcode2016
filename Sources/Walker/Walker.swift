@@ -7,9 +7,11 @@ enum WalkerError: Error {
     case invalidFacing( facing: Int )
 }
 
-class Walker {
+public class Walker {
     var pos = GridPoint(0,0)
     var facing = 0
+
+    public init() {}
 
     func newPos( _ direction: String ) throws -> GridPoint {
         let turn = direction[direction.startIndex]
@@ -80,7 +82,7 @@ class Walker {
         return directions.components(separatedBy: ", ").map { $0.trim() }
     }
 
-    func blocksAway( _ directions: String ) -> Int {
+    public func blocksAway( _ directions: String ) -> Int {
         for direction in splitDirections( directions ) {
             move(direction)
         }
@@ -88,7 +90,7 @@ class Walker {
         return pos.distance_from_origin()
     }
 
-    func firstCrossing( _ directions: String ) -> GridPoint? {
+    public func firstCrossing( _ directions: String ) -> GridPoint? {
         var visited : Set<GridPoint> = []
         for direction in splitDirections( directions ) {
             let from = pos

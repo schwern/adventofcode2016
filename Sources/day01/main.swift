@@ -1,4 +1,5 @@
 import Foundation
+import Walker
 
 let args = CommandLine.arguments
 if args.count != 2 {

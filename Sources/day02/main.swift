@@ -1,4 +1,5 @@
 import Foundation
+import KeypadCracker
 
 let cracker = KeypadCracker()
 let args = CommandLine.arguments

@@ -2,7 +2,7 @@ import Foundation
 import SwiftExtensions
 import GridPoint
 
-class KeypadCracker {
+public class KeypadCracker {
     enum KeypadCrackerErrors : Error {
         case invalidInstruction( instruction: String )
         case invalidMove( move: Character )
@@ -18,7 +18,9 @@ class KeypadCracker {
 
     var finger = GridPoint(2,0)
 
-    func figureCode( _ instructions: [String] ) -> String {
+    public init() {}
+
+    public func figureCode( _ instructions: [String] ) -> String {
         var code = ""
         for instruction in instructions {
             if( instruction.isEmpty ) {

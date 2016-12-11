@@ -1,6 +1,6 @@
 import XCTest
 import GridPoint
-@testable import day01
+@testable import Walker
 
 class TestWalker : XCTestCase {
     func testBlocksAway() {
